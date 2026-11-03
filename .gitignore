@@ -1,2 +1,8 @@
 env/
-Tugas-modul-3_F5212530117/venv/
+venv/
+build/
+dist/
+*.spec
+__pycache__/
+*.pyc
+.pytest_cache/
