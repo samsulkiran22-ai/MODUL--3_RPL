@@ -1,6 +1,7 @@
 import hashlib
 from config.database import Database
 
+
 class UserModel:
     def __init__(self):
         self.db = Database()
@@ -24,3 +25,24 @@ class UserModel:
             cursor.close()
             return user
         return None
+
+    def register_user(self, username, password, role="anggota"):
+        """Mendaftarkan user baru. Password otomatis di-hash SHA-256."""
+        if role not in ("admin", "anggota"):
+            print("Error register_user: role harus 'admin' atau 'anggota'")
+            return False
+
+        if self.conn:
+            try:
+                cursor = self.conn.cursor()
+                password_hash = self.hash_password(password)  # hash sebelum disimpan
+                query = f"INSERT INTO {self.table_name} (username, password, role) VALUES (%s, %s, %s)"
+                cursor.execute(query, (username, password_hash, role))
+                self.conn.commit()
+                cursor.close()
+                return True
+            except Exception as e:
+                # Misalnya username sudah dipakai (kolom UNIQUE)
+                print(f"Error register_user: {e}")
+                return False
+        return False
