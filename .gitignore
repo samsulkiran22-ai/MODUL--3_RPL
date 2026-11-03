@@ -4,5 +4,3 @@ build/
 dist/
 *.spec
 __pycache__/
-*.pyc
-.pytest_cache/
